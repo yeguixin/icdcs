@@ -1,6 +1,8 @@
-\section{Captcha Generator} \label{section: Captcha_generator}
+\subsection{Captcha Generator and Preprocessing} \label{section: Captcha_generator}
+\subsubsection{Captcha Generator}
 A key success factor for deep learning system is large amount of data to train.
-Intuitively, the simple yet direct approach in data collecting is to mine the Captchas from target websites and then paid to mark the labels to them artificially. Obviously, it is a time- or financial-consuming work with a high error rate during marking labels. Further, some type of Captchas are difficult to mine as the corresponding websites limit the accessing frequency.
+Intuitively, the simple yet direct approach in data collecting is to mine the Captchas from target websites and then paid to mark the labels to them artificially. Obviously, it is a time- or financial-consuming work with a high error rate during marking labels. 
+Further, some websites limit the accessing frequency, making it hard to mine the their Captchas.
 In addition, there is never such a public Captcha generator which can produce enough different styles of Captchas that match the requirement of the training process.
 Thus, the first concern of our work is to develop a flexible, well-calibrated training data generator.
 

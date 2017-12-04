@@ -23,8 +23,8 @@
         \end{algorithmic}
     \end{algorithm}
 \section{Implementation Details}
-
-\subsection{Captcha Preprocessing}
+\input{generator}
+\subsubsection{Captcha Preprocessing}
 Given some current text-based Captchas mainly consist of both solid character and hollow character (see Figure~\ref{fig:text-based captchas} (j) and (k)), the first step of our attack is to unify the different font styles to a fixed style. Here we aims to fill the hollow character with solid core due to the following two reasons:
 (1) the hollow character can be easily transformed to the solid one but not the opposite.
 (2) the solid character can be extracted more stable features than hollow character at the following step according to our preliminary experiments.

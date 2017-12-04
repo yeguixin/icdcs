@@ -9,9 +9,11 @@ This section gives an overview of our attacking system which exploits Deep Learn
   \label{fig:fill_color}
 \end{figure}
 
-\noindent \textbf{\emph{Step 1. Captcha Preprocessing}}
+\noindent \textbf{\emph{Step 1. Captcha Generator and Preprocessing}}
 
-The attack begins from inputting the distorted Captchas with complex background and overlapping characters. Given the characters on Captcha have different styles (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters), it is necessary to uniform the style of these characters for further processing. We have shown that the system can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
+The first step of our attack is to generate enough training Captchas that similar to the real ones. To do so, we developed a Captcha generator that can imitate Captcha production process, and automatically generate different styles of Captchas that are similar to those deployed in real-world websites. After that, we need to uniform the font style of characters for further processing. This is because on some Captcha schemes, the characters have different font style (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters). We have shown that our approach can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
+
+%The attack begins from inputting the distorted Captchas with complex background and overlapping characters. Given the characters on Captcha have different styles (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters), it is necessary to uniform the style of these characters for further processing. We have shown that the system can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
 
 \noindent \textbf{\emph{Step 2. Generate Regular Captcha}}
 
