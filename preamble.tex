@@ -1,0 +1,70 @@
+\pagestyle{plain}
+
+\usepackage[english,american]{babel}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage[colorlinks, linkcolor=red, anchorcolor=green, citecolor=blue]{hyperref}
+\usepackage{cite}
+\usepackage{balance}
+\usepackage{color}
+\usepackage[square,sort,comma,numbers]{natbib}
+\usepackage{url}
+\usepackage{diagbox}
+\usepackage{enumerate}
+\usepackage{setspace}
+\let\labelindent\relax
+\usepackage{enumitem}
+\usepackage{indentfirst}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{etoolbox}
+\usepackage{setspace}
+\usepackage{amsfonts}
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+%\renewcommand{\baselinestretch}{0.985}
+%\renewcommand{\captionfont}{\linespread{1.5}\normalsize}
+
+%\renewcommand{\thesection}{\arabic{section}}
+%\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+%\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+%\makeatletter
+%\def\@seccntformat#1{\@ifundefined{#1@cntformat}%
+%   {\csname the#1\endcsname\quad}%       default
+%   {\csname #1@cntformat\endcsname}}%    enable individual control
+%\newcommand\section@cntformat{}
+%\makeatother
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+%\usepackage{setspace}
+%\usepackage{epsfig,graphics,subfigure,psfrag,amsmath,amssymb}
+\newcommand\FIXME[1]{\textcolor{red}{FIX:}\textcolor{red}{#1}}
+\newcommand\FIXED[1]{\textcolor{blue}{FIXED: }\textcolor{blue}{#1}}
+
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+%\def\@IEEEsectpunct{.\ \,}
+%\def\paragraph{\@startsection{paragraph}{4}{\z@}{1.5ex plus 1.5ex minus 0.5ex}%
+%{0ex}{\normalfont\normalsize\sffamily\bfseries}}
+
+
+\newcommand{\circled}[2][]{\tikz[baseline=(char.base)]
+    {\node[shape = circle, draw, inner sep = 1pt]
+    (char) {\phantom{\ifblank{#1}{#2}{#1}}};%
+    \node at (char.center) {\makebox[0pt][c]{#2}};}}
+\robustify{\circled}
+
+\newcommand{\circling}[2][]{\tikz[baseline=(char.base)]
+    {\node[shape = circle, draw = gray!100, inner sep = 1pt, fill= gray!100]
+    (char) {\phantom{\ifblank{#1}{#2}{#1}}};%
+    \node at (char.center) {\makebox[0pt][c]{#2}};}}
+\robustify{\circled}

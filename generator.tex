@@ -1,0 +1,23 @@
+\section{Captcha Generator} \label{section: Captcha_generator}
+A key success factor for deep learning system is large amount of data to train.
+Intuitively, the simple yet direct approach in data collecting is to mine the Captchas from target websites and then paid to mark the labels to them artificially. Obviously, it is a time- or financial-consuming work with a high error rate during marking labels. Further, some type of Captchas are difficult to mine as the corresponding websites limit the accessing frequency.
+In addition, there is never such a public Captcha generator which can produce enough different styles of Captchas that match the requirement of the training process.
+Thus, the first concern of our work is to develop a flexible, well-calibrated training data generator.
+
+To achieve it, we design an generation model to imitate Captchas production process, and automatically generate different styles of Captchas that are similar to those deployed in real-world websites.
+Given a unique text-based Captcha scheme $x$, we first manually analyze the number of the characters and their corresponding security features, $S_{1:N}$, with $N$ parameters such as font style, size and color, rotating, distortion and waving \emph{et al.} described in Section~\ref{section: sccturity_features}.
+Here we ranked the from No.1 to 10 shown as Table~\ref{table: feature_number}.
+We specifics this analysis results as $\{ M, S_{1:N} \}$, where $M$ and $N$ respectively are the number of characters and its styles.
+Then given the content of Captcha, our generation model is able to automatically produce Captchas image $y$, which accords with the above analyzed style.
+We define our generation model as follows:
+\begin{equation}\label{equation: generator_model}
+  y \mid x \sim G_s(x),    x = \{M, N, L_{1:M}, S_{1:N} \}
+\end{equation}
+
+Where $G_s(x)$ is the generation model parameterized by unique style $s$, that can generate the Captcha image $y$ based on the unique Captcha scheme $x$. $M$ is the number of characters on the Captcha image and $L_{1:M}$ represents the content of the characters. For each character, our generation model individually generates corresponding style defined by $S_{1:N}$, because each character on some Captchas may have different style.
+
+\textbf{Example:} We use the Captcha image depicted in Figure~\ref{fig:overview} as an example to describe our Captcha generator. This Captcha scheme consists of both English letters and Arabic numerals and the number of characters are fixed (4 characters). The content of the Captcha is $\{7, j, R, U\}$.
+It uses 2 anti-segmentation features (Complex Background and Connection Lines) and 4 anti-recognition features (Character Set, Font size, Rotating and Distortion). So the collection of security features number is \{\circled{\small 0}, \circled{\small 1}, \circled{\small 3}, \circled{\small 4}, \circled{\small 6}, \circled{\small 7}\}.
+Considering these parameters, the variance $x$ is $\{4, 6, \{7, j, R, U\}, \{\circled{\small 0}, \circled{\small 1}, \circled{\small 3}, \circled{\small 4}, \circled{\small 6}, \circled{\small 7}\}\}$.
+For each character in the collection $\{4, 6, \{7, j, R, U\}$, our generator product the subgraph correspond to its security features. At last, the generator aggregates the subgraph to produce a Captcha image.
+
