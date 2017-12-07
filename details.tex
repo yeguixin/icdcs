@@ -24,16 +24,33 @@
     \end{algorithm}
 \section{Implementation Details}
 \input{generator}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{fig/fill_color.pdf}
+  \caption{The procedure of Captcha preprocessing.}
+  \label{fig:fill_color}
+\end{figure}
+
 \subsubsection{Captcha Preprocessing}
-Given some current text-based Captchas mainly consist of both solid character and hollow character (see Figure~\ref{fig:text-based captchas} (j) and (k)), the first step of our attack is to unify the different font styles to a fixed style. Here we aims to fill the hollow character with solid core due to the following two reasons:
+Given some current text-based Captcha schemes mainly consist of both solid characters and hollow characters (see Figure~\ref{fig:text-based captchas} (j) and (k)), the first step of our attack is to unify the different font styles to a fixed style. Here we aims to fill the hollow character with solid core due to the following two reasons:
 (1) the hollow character can be easily transformed to the solid one but not the opposite.
 (2) the solid character can be extracted more stable features than hollow character at the following step according to our preliminary experiments.
 
 To do so, we first convert the colorful image to black-and-white using the standard threshold selection method proposed by Otsu~\cite{Ostu1979A}\footnote{Note that we only use the binarized image to locate the position of the hollow part of the character other than furthering processing.}.
 Then the Color Filling Segmentation (CFS)~\cite{Yan2008A} is used to fill the hollow character with the red color (see Figure~\ref{fig:fill_color} (b)). Next, the color-filled image should be convert to color-coincident image by changing the red filled area to the original character color (see Figure~\ref{fig:fill_color} (c)). At last, the thick filled characters on the color-coincident image need to be cropped as the original character (see Figure~\ref{fig:fill_color} (d)).
 
+However, how to translate the color-coincident image to the target image (shown in Figure~\ref{fig:fill_color}) is a challenge. Fugure~\ref{fig: preprocessing} presents our approach to address this challenge. We first segment the characters using CFS method~\cite{Yan2008A}.  Then we extract the color-filled characters and using morphological algorithm to dilate these characters. To effectively dilate both the edge and inflexion areas, we use the ellipse and cross kernels. We set the size of the kernel to (10, 10), an empirical setting that makes dilated characters clearly visible. After that, we combine these segmented characters to a Captcha image.
+
 Our method for unifying the character font style is described in Algorithm~\ref{alg:unify_font_style}.
 The input to the algorithm is the original Captcha image with different font styles and the number of characters on this Captcha, and the output of the algorithm is the Captcha with solid characters. To locate the hollow characters, we first convert the colorful original image to binarized image (line 1). According to the binarized image, we can get the positions of the each hollow characters on the colorful Captcha image (line 2) because the size of colorful image is the same as the binarized image. For each hollow character, we use CFS method described above to fill it with red color (line 6) and then replace the red filled color with the character color to get the color-coincident image (line 7). Finally, we crop the filled character on the color-coincident image to unify the font style of characters (line 10).
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{fig/captcha_preprocessing/preprocessing.pdf}
+  \caption{This figure shows how to unify the font style using the algorithm of morphological dilation.}
+  \label{fig: preprocessing}
+\end{figure}
 
 \subsection{Generate Regular Captcha}
 After unifying the character font style, we need to generate regular Captchas for better recognizing. We achieve this by employing an image-to-image translation algorithm called Pix2Pix~\cite{Pix2PixCode}. This algorithm automatically translate the image from the original style to the target style. In our case, the images to be translated are the Captchas with complex noisy background, overlapping and distorted characters (original style). These are supplied to the algorithm by a Captcha generator developed using a simple script (Section~\ref{section: Captcha_generator}). The algorithm tries to generate regular Captcha with appropriate character spacing and clean background (target style).

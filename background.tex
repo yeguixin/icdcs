@@ -1,6 +1,6 @@
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=0.9\textwidth]{fig/overview.pdf}
+  \includegraphics[width=0.9\textwidth]{fig/overview/overview.pdf}
   \caption{The overview of our attack.}
   \label{fig:overview}
 \end{figure*}
@@ -32,6 +32,23 @@ They demonstrate that text-based Captchas are vulnerable under their attacks as 
 Each of these styles can be designed more complex than previous. For examples, the value of character's rotating angle can be set more larger than previous, and the background can be became more complex.
 (2) The conbination of these styles is able to increase the security strength of Captchas so that it can defeat against current attacks. Current Captchas (Figure~\ref{fig:text-based captchas} (2)) combine many anti-segmentation and anti-recognition features than previous Captchas (See Figure~\ref{fig:text-based captchas} (1)). This increases the security of text-based Captchas. Recent studies suggests that text-based Captchas are still a security mechanism if they are properly designed~\cite{Thomas2013Trafficking,Bursztein2014Easy}. In the following, we will introduce the current Captcha scheme.
 
+\begin{table*}[t]
+    \centering
+    \caption{Mappings from security features to its corresponding numbers}
+    \scriptsize
+    \label{table: feature_number}
+    \begin{tabular}{l|ccc|ccccccc}
+        \toprule
+        & \multicolumn{3}{|c|}{\textbf{Anti-segmentation Features}} & \multicolumn{7}{|c}{\textbf{Anti-recognition Features}} \\
+        \multirow{-2}{*}{\textbf{Security Features}} & Background & Connection Lines & Overlapping & Char Set & Font Style & Font Size & Font Color & Distortion & Rotating & Waving \\
+        \midrule
+        \textbf{Feature Number} & \circled{0} & \circled{1} & \circled{2} & \circled{3} & \circled{4} & \circled{5} & \circled{6} & \circled{7} & \circled{8} & \circled{9} \\
+        \midrule
+        \textbf{Param Value} & Fixed or Random & \tabincell{c}{Number, \\ Location} & \tabincell{c}{Fixed or \\ Random} & \multicolumn{7}{c}{Fixed or Random} \\
+        \bottomrule
+    \end{tabular}
+\end{table*}
+
 \subsubsection{Current Captcha Scheme}
 Current Captcha scheme combines many anti-segmentation and anti-recognition features. This makes current text-based Captchas more complex than previous Captcha schemes. Figure~\ref{fig:text-based captchas} (2) shows some representative current Captcha schemes. Obviously, it presents that each current Captcha scheme is compromised of many security features such as different font style, character overlapping, rotating and distorting, connecting lines and so on. Take Figure~\ref{fig:text-based captchas} (k) for an example, this Captcha using two anti-segmentation features (complex background and connecting lines) and five anti-recognition features (Character Set: both English letters and Arabic numerals, Font Style: both solid font and hollow font, Font Size: different font size, Font Color: different font color, Rotating: rotating character with different angles.). Likewise, other Captchas presented in Figure~\ref{fig:text-based captchas} also uses many anti-segmentation and anti-recognition features.
 
@@ -46,21 +63,6 @@ In terms of the above complex Captcha schemes, this paper presents a hierarchica
 Our approach is able to dynamic adapt the different styles of Captchas. Specifically, to the Captchas with confusing background, our method can effectively clean up the complex background. To the Captchas with overlapping characters, our method can expand the space between adjacent characters. To the Captchas with both cases, our method first remove the background and then enlarge the space of adjacent characters.
 %Unlike previous attacks, our method is able to effectively clean up the complex background and connecting lines, and then the space between adjacent overlapping characters can be expanded as much as possible. At last, we explore to translate the distorted character to a regular one for the purpose of improve the success rate using CNN recognition engine.
 Our work aims to call the community to revisit the security of text-based Captchas under the age of Artificial Intelligence.
-
-\begin{table*}[t]
-    \centering
-    \caption{Mappings from security features to its corresponding numbers}
-    \scriptsize
-    \label{table: feature_number}
-    \begin{tabular}{l|ccc|ccccccc}
-        \toprule
-        & \multicolumn{3}{|c|}{\textbf{Anti-segmentation Features}} & \multicolumn{7}{|c}{\textbf{Anti-recognition Features}} \\
-        \multirow{-2}{*}{\textbf{Security Features}} & Complex Background & Connection Lines & Overlapping & Character Set & Font Style & Font Size & Font Color & Distortion & Rotating & Waving \\
-        \midrule
-        \textbf{Feature Number} & \circled{0} & \circled{1} & \circled{2} & \circled{3} & \circled{4} & \circled{5} & \circled{6} & \circled{7} & \circled{8} & \circled{9} \\
-        \bottomrule
-    \end{tabular}
-\end{table*}
 
 \subsection{Generative Adversarial Networks} \label{section: GANs}
 
