@@ -32,6 +32,13 @@
   \label{fig:fill_color}
 \end{figure}
 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.45\textwidth]{fig/captcha_preprocessing/preprocessing.pdf}
+  \caption{This figure shows how to unify the font style using the algorithm of morphological dilation.}
+  \label{fig: preprocessing}
+\end{figure}
+
 \subsubsection{Captcha Preprocessing}
 Given some current text-based Captcha schemes mainly consist of both solid characters and hollow characters (see Figure~\ref{fig:text-based captchas} (j) and (k)), the first step of our attack is to unify the different font styles to a fixed style. Here we aims to fill the hollow character with solid core due to the following two reasons:
 (1) the hollow character can be easily transformed to the solid one but not the opposite.
@@ -47,34 +54,63 @@ The input to the algorithm is the original Captcha image with different font sty
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.45\textwidth]{fig/captcha_preprocessing/preprocessing.pdf}
-  \caption{This figure shows how to unify the font style using the algorithm of morphological dilation.}
-  \label{fig: preprocessing}
+  \includegraphics[width=0.3\textwidth]{fig/loss_anlysis/captcha_generated.pdf} \\
+  \caption{Captchas generated when using L1 and L2 loss function.}
+  \label{fig: L1_L2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfigure{
+      \begin{minipage}[t]{0.22\textwidth}
+      \includegraphics[width=\textwidth]{fig/loss_anlysis/loss_L1.pdf}\\
+      \center L1 loss curve
+      \end{minipage}
+  }
+  \subfigure{
+      \begin{minipage}[t]{0.22\textwidth}
+      \includegraphics[width=\textwidth]{fig/loss_anlysis/loss_L2.pdf}\\
+      \center L2 loss curve
+      \end{minipage}
+  }
+  \caption{Loss curve}
+  \label{fig: loss_anlysis}
 \end{figure}
 
 \subsection{Generate Regular Captcha}
-After unifying the character font style, we need to generate regular Captchas for better recognizing. We achieve this by employing an image-to-image translation algorithm called Pix2Pix~\cite{Pix2PixCode}. This algorithm automatically translate the image from the original style to the target style. In our case, the images to be translated are the Captchas with complex noisy background, overlapping and distorted characters (original style). These are supplied to the algorithm by a Captcha generator developed using a simple script (Section~\ref{section: Captcha_generator}). The algorithm tries to generate regular Captcha with appropriate character spacing and clean background (target style).
+After unifying the character font style, we need to generate regular Captchas for further recognizing. We achieve this by employing an image-to-image translation algorithm called~\emph{Pix2Pix}~\cite{Pix2PixCode}. This algorithm automatically translate the image from the original style to the target style. In our case, the images to be translated are the Captchas with complex noisy background, overlapping and distorted characters (original style). These are supplied to the algorithm by a Captcha generator developed using a simple script (Section~\ref{section: Captcha_generator}). The algorithm tries to generate regular Captcha with appropriate character spacing and clean background (target style).
+Note that if the Captcha to be translated has no background as Google scheme (Figure~\ref{fig:text-based captchas} (l)), our approach just enlarge the space of adjacent character and Regularization operations. Likewise, if the Captcha only contains deformed but no overlapping characters (Figure~\ref{fig:text-based captchas} (j)), our approach only need to regular the characters.
 
-In order to generate regular Captcha, we propose the hierarchical methods that employ a variant approach of \emph{Pix2Pix} to complete the progressive tasks.
-These hierarchical methods share the same methodology of the variant algorithm.
-The main differences of these hierarchical approaches are the input and output images. The inputs of the first steps are the images with complex background, overlapping and distorted characters.
-These inputting images are eliminated the complex background by the variant approach which outputs the Captcha images with white background, overlapping and distorted characters.
-According to the outputs, the second step is to expand the space between the adjacent overlapping characters using the same variant method, and produces the Captcha images only with distorted characters.
-Finally, the distorted characters are translated to the regular ones using the variant method.
+\noindent \textbf{Hierarchical Methods.} In order to generate regular Captcha, we propose a hierarchical method that employ a variant approach of \emph{Pix2Pix} to complete the progressive tasks.
+The hierarchical methods are comprised of three sequenced models, and they can respectively achieve three different tasks: removing complex background, expanding space of adjacent overlapping characters and making the distorted character to be a regular one. These three sequence models share the same methodology of~\emph{Pix2pix}.
+The main differences of these sequences models are the input and output.
+The output of the previous model is the input of the following model.
+Take the Captcha in Figure~\ref{fig:overview} for an example, the first model is applied to eliminate the complex background and Connecting lines and output the Captcha with clean background. Then the space of the characters on the output Captcha is expanded by the second model, and produces the Captcha only with distorted characters. Finally, the distorted characters are translated to the regular ones using the last model.
+%The inputs of the first step are the images with complex background, overlapping and distorted characters.
+%These inputting images are eliminated the complex background by the variant approach which outputs the Captcha images with clean background, overlapping and distorted characters.
+%According to the outputs, the second step is to expand the space between the adjacent overlapping characters using the same variant method, and produces the Captcha images only with distorted characters.
+%Finally, the distorted characters are translated to the regular ones using the variant method.
 
-\noindent \textbf{Hierarchical Methods.} The hierarchical methods are comprised of three sequenced models, and they can respectively achieve the tasks of removing complex background, expanding space between adjacent overlapping characters and translating the distorted Captcha to a regular one. The sequenced models share the same translation model.
-The key part of the translation model is a variant of \emph{Pix2Pix}, which consists of a image generator and discriminator. They are competing with each other until reach Nash equilibrium when training processing (Section~\ref{section: GANs}).
-
-In our case of removing background, the inputting data are the image pairs including the Captcha images with complex background and the images with white background.
-The goal is to train a generative model that can translate the Captcha image with complex background to the images with white background.
-During training, the image generator produces the fake image that similar to the image with white background by randomly add the noisy points to it. The fake image and the image with complex background compose an image pair.
-For the composed image pair, the discriminator learns to classify between the real and fake pairs. This competing process will be terminated until the discriminator cannot classify the image pairs.
-Unlike the \emph{Pix2Pix}, we use the L2 distance to figure out the loss of the generator as L2 loss can capturing the overall structure of the Captcha image, which contribute to removing the background.
+\noindent \textbf{Key Algorithm.} The key part of the hierarchical methods is a variant of \emph{Pix2Pix}. It consists of an image generator and an discriminator. They are competing with each other until reach Nash equilibrium during training processing (Section~\ref{section: GANs}).
+We take the generation model of removing complex background for detailed introducing our key algorithm.
+The goal is to train a generative model that can translate the Captcha image with complex background to the images with clean background.
+In order to train this generation model, the input data are the image pairs including the Captcha images with background and the images with clean background.
+During training, the image generator produces the fake image that similar to the image with white background by randomly adding the noisy points to it. The fake image and the image with complex background compose an image pair.
+For the composed image pair, the discriminator learns to classify between the real and fake pairs. This competing process will be terminated until the discriminator cannot correctly classify the image pairs.
+Unlike the \emph{Pix2Pix}, we use the L2 loss function to figure out the loss of the generator because L2 loss function can capturing the overall structure of the Captcha image, which contribute to removing the background and other two tasks (expand the space of adjacent characters and eliminate distorted characters).
 \begin{equation}\label{equation: L2_loss}
     \mathcal{L}_{L2}(Gen) = \mathbb{E}_{x,y \epsilon C_{O}, z \epsilon N_{O}} \|y - Gen(x, z)\|_{2}
 \end{equation}
 
 Where $x$ is the Captcha image with white background, $y$ is the image with complex background and $z$ is the fake image with the noisy points.
+
+\noindent \textbf{Analysis of Loss Function.} To demonstrate the effectiveness of L2 over L1 loss function, we conduct many perliminary experiments. Take Figure~\ref{fig: L1_L2} (a) for instance, it is expected to be translated to regular Captcha as Figure~\ref{fig: L1_L2} (b). When using L1 loss function, only one character can be successful translated to the target one shown as Figure~\ref{fig: L1_L2} (c). In contrary, all characters can be correctly translated to be the regular ones (Figure~\ref{fig: L1_L2} (d)) when using L2 loss function. This is because the generation model can achieve global optimum when using L2 loss function. Figure~\ref{fig: loss_anlysis} shows that the loss value of L1 has been fluctuating while the value of L2 has been tending to convergence.
+
+%The hierarchical methods are comprised of three sequenced models, and they can respectively achieve the tasks of removing complex background, expanding space between adjacent overlapping characters and translating the distorted Captcha to a regular one. The sequenced models share the same translation model.
+%The key part of the translation model is a variant of \emph{Pix2Pix}, which consists of a image generator and discriminator. They are competing with each other until reach Nash equilibrium when training processing (Section~\ref{section: GANs}).
+%
+%In our case of removing background, the inputting data are the image pairs including the Captcha images with complex background and the images with white background.
+%The goal is to train a generative model that can translate the Captcha image with complex background to the images with white background.
 
 \begin{figure}[!t]
   \centering

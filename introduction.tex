@@ -64,14 +64,14 @@
             \subfigure{
                 \begin{minipage}[t]{0.20\textwidth}
                     \includegraphics[width=\textwidth]{fig/prior_captchas/prior_captcha11.jpg} \\
-                    \center (i) Tecent
+                    \center (i) Baidu
                 \end{minipage}
             }
             \hspace{0.16cm}
             \subfigure{
                 \begin{minipage}[t]{0.20\textwidth}
                     \includegraphics[width=\textwidth]{fig/prior_captchas/prior_captcha12.jpg} \\
-                    \center (j) Baidu
+                    \center (j) Tecent
                 \end{minipage}
             }
             \hspace{0.16cm}
@@ -116,4 +116,8 @@ We thoroughly evaluate our approach using real-world captchas collected from som
 
 \textbf{Contributions} This paper makes the following specific contributions:
 
-In order to design a more security Captcha scheme, currently Captchas deployed by many companies 
+\begin{itemize}
+  \item[-] \textbf{A Large Scale Evaluation.} We conduct a large scale evaluation on real-world text-based Captchas. Our experimental results show that all current Captchas deployed in famous websites are vulnerable to automated attacks.
+  \item[-] \textbf{A New Segmentation technique.} We design a hierarchical generation models that can effectively segment the deformed characters on the Captchas.
+  \item[-] \textbf{New Findings.} Our study suggests that complex noisy background cannot strength the security of Captchas.
+\end{itemize} 
