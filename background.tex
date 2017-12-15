@@ -13,7 +13,12 @@ kerning (also known as character collapsing), distortion, occluding lines, noise
 \FIXME{TODO: Will come to this later. We need to cut the crap in text.}
 
 \subsection{Generative Adversarial Networks}
-
+Our approach is inspired by the recently proposed generative adversarial networks (\GANs)~\cite{Goodfellow2014Generative}. A \GAN consists
+of two models: a generative model for creating synthesized examples and a discriminative model to distinguish the synthesized examples from
+the real ones. Backpropagation is applied to train both models so that the generator produces better synthesized samples, while the
+discriminator becomes more skilled at flagging synthetic samples. \GANs have shown impressive results in image
+~\cite{pix2pix2016,CycleGAN2017} and natural language processing~\cite{Yu2016SeqGAN,Li2017Adversarial}. However, due to the newness of the
+technique, no work so far has exploited \GANs to develop a generic approach to attack text-based captchas.
 
 %\subsection{Text-based Captchas}
 %
