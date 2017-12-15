@@ -1,6 +1,6 @@
 
 %\documentclass[conference]{IEEEtran}
-\documentclass[10pt,conference]{IEEEtran}
+\documentclass[letterpaper,twocolumn,10pt]{article}
 
 \input{preamble}
 
@@ -8,26 +8,34 @@
 \begin{document}
 %\setcopyright{acmcopyright}
 
-\title{When Deep Learning Meets Captcha: A Large Scale Study Showing That Captcha Should Be Abandoned}
+\title{When Deep Learning Meets Captcha: \\ Why Text-based Captcha Should Be Abandoned}
 \author{
 }
 
-\IEEEoverridecommandlockouts \makeatletter\def\@IEEEpubidpullup{9\baselineskip}\makeatother \IEEEpubid{\parbox{\columnwidth}{ }
-\hspace{\columnsep}\makebox[\columnwidth]{}}
 
 \maketitle
 
-\begin{abstract}
-CAPTCHA is a standard secure mechanism to automated tell computers and humans, and is widely applied to prevent against malicious bot programs. In this study, we carry out a large scale systematic study on current text-based Captchas based on complex deformable characters that are augmented with both anti-segmentation and anti-recognition techniques. Unlike prior fine research that focus on the text-based Captchas with the same or similar styles, we present a novel generic hierarchical attack on different styles of Captchas. Our approach is able to translate these various styles of Captchas to a unique one using conditional Generative Adversarial Networks (cGANs). Using our CNN recognition engine, we can accurately identify the translated Captchas. We thoroughly evaluated our approach using real-world Captchas, and found all current text-based Captchas are vulnerable to our automated attack with an average speed of 224.35ms on an ordinary server (with a 3.2-GHz Inter Xeon CPU with 100-GB RAM and a TITAN Xp GPU). We also discovered that, the Captcha with complex noisy background do not defend against segmentation under our attack. This is demonstrated by the fact that we are able to clean out any sophisticated background from the Captcha image. Since our attack can break a widely of current text-based Captchas, this paper calls the community to revisit the risks of using text-based Captcha to defend against malicious bots.
-\end{abstract}
-
-\begin{IEEEkeywords}
-    Captcha, Security, Generic Attack, Text-based
-\end{IEEEkeywords}
+\subsection*{Abstract}
+Abstract goes here..
 
 
-%TODO:
-% Read: A pilot study on the security of pattern screen-lock methods and soft side channel attacks
+%\begin{abstract}
+%CAPTCHA is a standard secure mechanism to automated tell computers and humans, and is widely applied to prevent against malicious bot
+%programs. In this study, we carry out a large scale systematic study on current text-based Captchas based on complex deformable characters
+%that are augmented with both anti-segmentation and anti-recognition techniques. Unlike prior fine research that focus on the text-based
+%Captchas with the same or similar styles, we present a novel generic hierarchical attack on different styles of Captchas. Our approach is
+%able to translate these various styles of Captchas to a unique one using conditional Generative Adversarial Networks (cGANs). Using our CNN
+%recognition engine, we can accurately identify the translated Captchas. We thoroughly evaluated our approach using real-world Captchas, and
+%found all current text-based Captchas are vulnerable to our automated attack with an average speed of 224.35ms on an ordinary server (with
+%a 3.2-GHz Inter Xeon CPU with 100-GB RAM and a TITAN Xp GPU). We also discovered that, the Captcha with complex noisy background do not
+%defend against segmentation under our attack. This is demonstrated by the fact that we are able to clean out any sophisticated background
+%from the Captcha image. Since our attack can break a widely of current text-based Captchas, this paper calls the community to revisit the
+%risks of using text-based Captcha to defend against malicious bots.
+%\end{abstract}
+
+
+
+
 \input{introduction}
 \input{background}
 %\input{generator}
@@ -40,15 +48,11 @@ CAPTCHA is a standard secure mechanism to automated tell computers and humans, a
 %\input{materials}
 %\input{related}
 
-%\section*{Acknowledgements}
-%    We would like to thank all participants who help for completing the experiments. Thank all volunteers for their time and insights as
-%    well as the anonymous reviewer for their critical and constructive comments. This work was supported by NSFC (Grant No. 61672427) and
-%    the UK Engineering and Physical Sciences Research Council (Grants No. EP/M01567X/1(SANDeRs) and EP/M015793/1(DIVIDEND)).
 
-%\begin{spacing}{0.98}
-\bibliographystyle{IEEEtranS}
-\balance
+{\footnotesize
+\bibliographystyle{acm}
 \bibliography{refs}
-%\end{spacing}
+}
+
 
 \end{document}
