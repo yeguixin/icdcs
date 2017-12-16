@@ -1,28 +1,38 @@
 \section{Overview}
+Our work develops an end to end approach for cracking text-based captchas. Instead of relying a large volume of captcha images (which are
+increasingly hard to gather) to train individual models for segmentation and recognition, our approach takes in a much smaller number of
+real captchas and it automatically learns how to recognize the target captcha system.  \FIXME{Bla… here we emphasizes that we develop an
+approach based on \GANs that learns how to synthesize captchas and then uses the synthesized examples to build an accurate model.}
 
-This section gives an overview of our attacking system which exploits deep learning techniques to recognize current captchas. The system takes in a deformed text-based Captcha with complex noisy background. It automatically generated the corresponding regular Captcha. Then, the regular captcha is cracked by CNN recognition engine. Figure~\ref{fig:overview} depicts the overview of our attack:
 
-\noindent \textbf{\emph{Step 1. Captcha Generator and Preprocessing}}
-
-The first step of our attack is to generate enough training Captchas that similar to the real ones. To do so, we developed a captcha generator that can imitate captcha production process, and automatically generate different styles of captchas that are similar to those deployed in real-world websites. After that, we need to uniform the font style of characters for further processing. This is because on some captcha schemes, the characters have different font style (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters). We have shown that our approach can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
-
-%The attack begins from inputting the distorted Captchas with complex background and overlapping characters. Given the characters on Captcha have different styles (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters), it is necessary to uniform the style of these characters for further processing. We have shown that the system can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
-
-\noindent \textbf{\emph{Step 2. Generate Regular Captcha}}
-
-Once the style of character on captcha image is uniformed, a deep learning algorithm will be applied to generate the regular captcha shown as Figure~\ref{fig:overview}. We achieve this through hierarchical approaches described as the following three steps:
-
-\noindent \circling{\textcolor{white}{1}} \textbf{Remove Noisy Background:}  To eliminate the influence of complex background on generating regular captcha, the first step is to remove the complex background from the captcha, and produce the captcha with clean background.
-To do so, a deep learning algorithm will be applied to remove the complex noisy background stay on captcha.
-For each captcha scheme, this algorithm needs to train the model for cleaning out the background.
-
-\noindent \circling{\textcolor{white}{2}} \textbf{Expand Space Between Adjacent Characters:} This step aims to increase the distance between two adjacent characters on captcha. We use the same algorithm as the method of removing background to enlarge the inter-character distance and generate a new captcha. Keep in mind that the captcha generated at this stage is distorted.
-
-\noindent \circling{\textcolor{white}{3}} \textbf{Regularization:} In this step, our system is able to automatically translate the distorted captcha to a regular one.
-
-\noindent \textbf{\emph{Step 3. Recognize Captcha}}
-
-In this final step, we use a radical CNN framework as our recognition engine to identify the content of the regular captcha translated from last step.
+By employing \emph{transfer learning}, our approach is able to produce a new model quicker when targeting a new captcha system. The
+properties of the images that are abstracted by the beginning layers of our neural networks are mostly independent of the specific captcha
+system. This means that one can reuse these parts of the network across captcha systems, and, in the process, learning is speeded up
+considerably.
 
 
 
+%
+%This section gives an overview of our attacking system which exploits deep learning techniques to recognize current captchas. The system takes in a deformed text-based Captcha with complex noisy background. It automatically generated the corresponding regular Captcha. Then, the regular captcha is cracked by CNN recognition engine. Figure~\ref{fig:overview} depicts the overview of our attack:
+%
+%\noindent \textbf{\emph{Step 1. Captcha Generator and Preprocessing}}
+%
+%The first step of our attack is to generate enough training Captchas that similar to the real ones. To do so, we developed a captcha generator that can imitate captcha production process, and automatically generate different styles of captchas that are similar to those deployed in real-world websites. After that, we need to uniform the font style of characters for further processing. This is because on some captcha schemes, the characters have different font style (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters). We have shown that our approach can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
+%
+%%The attack begins from inputting the distorted Captchas with complex background and overlapping characters. Given the characters on Captcha have different styles (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters), it is necessary to uniform the style of these characters for further processing. We have shown that the system can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
+%
+%\noindent \textbf{\emph{Step 2. Generate Regular Captcha}}
+%
+%Once the style of character on captcha image is uniformed, a deep learning algorithm will be applied to generate the regular captcha shown as Figure~\ref{fig:overview}. We achieve this through hierarchical approaches described as the following three steps:
+%
+%\noindent \circling{\textcolor{white}{1}} \textbf{Remove Noisy Background:}  To eliminate the influence of complex background on generating regular captcha, the first step is to remove the complex background from the captcha, and produce the captcha with clean background.
+%To do so, a deep learning algorithm will be applied to remove the complex noisy background stay on captcha.
+%For each captcha scheme, this algorithm needs to train the model for cleaning out the background.
+%
+%\noindent \circling{\textcolor{white}{2}} \textbf{Expand Space Between Adjacent Characters:} This step aims to increase the distance between two adjacent characters on captcha. We use the same algorithm as the method of removing background to enlarge the inter-character distance and generate a new captcha. Keep in mind that the captcha generated at this stage is distorted.
+%
+%\noindent \circling{\textcolor{white}{3}} \textbf{Regularization:} In this step, our system is able to automatically translate the distorted captcha to a regular one.
+%
+%\noindent \textbf{\emph{Step 3. Recognize Captcha}}
+%
+%In this final step, we use a radical CNN framework as our recognition engine to identify the content of the regular captcha translated from last step.
