@@ -1,16 +1,33 @@
 \begin{figure*}[!t]
   \centering
-  \includegraphics[width=0.9\textwidth]{fig/overview/overview.pdf}
+  \includegraphics[width=0.8\textwidth]{fig/overview/overview.pdf}
   \caption{The overview of our attack.}
   \label{fig:overview}
 \end{figure*}
 
 \section{Background}
-\subsection{Security Features of Text-based Captchas}
+\subsection{Security Features of Text-based Captchas \label{section: security_features}}
 Recent text-based captchas have employed a range of security features to withstand automated solving. These features include negative
 kerning (also known as character collapsing), distortion, occluding lines, noise background etc.
 
-\FIXME{TODO: Will come to this later. We need to cut the crap in text.}
+To summary out a representative security features, we collected a wide range of real captchas that had ever been or being used by the top 50 most popular websites listed by Alexa~\footnote{http://www.alexa.com/topsites}. Figure~\ref{fig:text-based captchas} gives some representative examples of our collected Captchas~\footnote{Some previous used Captchas come from the related works~\cite{Gao2013The,Gao2016A,Bursztein2011Text}.}.
+The security features can be classified into two categories: anti-segmentation feature and anti-recognition feature. The anti-segmentation feature aims to increase the difficulty of character segmentation, and it includes connection lines, character overlapping and noise background as shown in Figure~\ref{fig:security_features} (1), (2), (6). 
+The anti-recognition feature can defense against recognizing by changing the font style of part characters and it consists of different font sizes and colors, solid and hollow font and character rotating, distortion and waving as shown in Figure~\ref{fig:security_features} (3), (4), (5).
+
+\begin{figure}[!t]
+  \centering
+  \includegraphics[width=0.45\textwidth]{fig/security_features/security_features.pdf}
+  \caption{The security features of captchas.}
+  \label{fig:security_features}
+\end{figure}
+ %To do so, the captcha is comprised of overlapping characters and is improved by sophisticated noise background and extra connection lines. Thus, the anti-segmentation feature is the global feature because it makes the whole captcha complex.
+%In contrary, the anti-recognition feature belongs to local feature. It can defense against automated recognizing characters by changing the font style of part characters. We list the two features in details below.
+
+%\noindent \textbf{Anti-segmentation features} \textbf{1. Noise Background:} Try to make the background color that has little difference with the text for confusing the solver. \textbf{2. Connection Lines:} Add extra line segments on the text to prevent solver from automatic finding the single character. \textbf{3. Overlapping} Decreasing the space between the adjacent characters to make them collapsed.
+%
+%\noindent \textbf{Anti-recognition features} \textbf{1. Character Set:} Which charset the text-based Captcha scheme uses. Some schemes only include English letters while some schemes consist of both English letters and Arabic numerals. \textbf{2. Font Style:} Using multiple font styles such as solid font, hollow font or font comprised of dots. \textbf{3. Font Size} Using random font size when generating captchas. \textbf{4. Font Color:} Using variable font colors. \textbf{5. Distortion:} Distorting characters using attractor fields. \textbf{6. Rotating:} Rotating characters with random angles. \textbf{7. Waving:} Distorting the characters in a wave fashion.
+%
+%\FIXME{TODO: Will come to this later. We need to cut the crap in text.}
 
 \subsection{Generative Adversarial Networks}
 Our approach is inspired by the recent breakthrough of effectiveness of generative adversarial networks

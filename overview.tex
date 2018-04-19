@@ -1,14 +1,33 @@
 \section{Overview}
 Our work develops an end to end approach for cracking text-based captchas. Instead of relying a large volume of captcha images (which are
 increasingly harder to obtain) to train individual models for segmentation and recognition, our approach takes in a much smaller number of
-real captchas and it automatically learns how to recognize the target captcha system.  \FIXME{Bla… here we emphasizes that we develop an
-approach based on \GANs that learns how to synthesize captchas and then uses the synthesized examples to build an accurate model.}
+real captchas and it automatically learns how to recognize the target captcha system.
+To do so, we develop an approach based on \GANs that learns how to synthesise captchas and then uses the synthesized examples to bulid a base model. We then employ transfer learning to produce a fine tune model quicker when targeting the real captchas. The properties of the images that are abstracted by the former layers of our neural networks are mostly independent of the specific captcha system. This means that one can reuse these parts of the network across similar captcha systems, and, in the process, learning is speeded up considerably. Figure~\ref{fig:overview} depicts the four steps of our attacking system:
+
+\noindent \textbf{\emph{Step 1. Synthesize Captchas:}}
+The first step of our attack is to generate enough training captchas that similar to the real ones (Figure~\ref{fig:overview} (1)). To do so, we developed a captcha generator based on \GANs that can automatically generate the similar captchas as the target one. The generator consists of two parts: a synthesizer that can imitate captcha production process, and automatically synthesizes the captchas; a discriminator that can evaluate the similarity between the synthesized sample and real captcha. This process will be terminated until the similarity reaches the threshold. To speed up the convergence of the synthesizer, we use the grid search method~\cite{Audet2006Mesh} to select the optimal parameters that are used to synthesize captchas.
+
+\noindent \textbf{\emph{Step 2. Remove Noise Background and Unify the Font Style:}}
+To improve the security of captchas, some websites use obscured background (Figure~\ref{fig:text-based captchas} (e) and (f)) and some use compounded font styles (Figure~\ref{fig:text-based captchas} (g)). Thus, to these captchas, a deep learning model needs to be trained for removing the background or for unifying the font style (Figure~\ref{fig:overview} (2)). This step outputs the clean captcha\footnote{The clean captcha refers to the captcha without noise background or the one with uniform font style.}.
+Note that for each captcha scheme, this algorithm needs to train a unique model for addressing the challenge.
+
+\noindent \textbf{\emph{Step 3. Train the Base Model:}}
+This step aims to build the base model using the clean captchas for further processing (Figure~\ref{fig:overview} (3)). We use a radical convolutional neural network as our training engine to construct the base model. The training progress will be terminated when the loss of objective function drops to a threshold or when the number of epoches reaches a threshold.
+
+\noindent \textbf{\emph{Step 4. Train the Fine Tune Model:}}
+In this final step, we use transfer learning method to fine tune the base model and get the fine tune model (Figure~\ref{fig:overview} (4)). To do so, we retain the former layers of the base model and retrain the later layers by using a small number of real captchas.
 
 
-By employing \emph{transfer learning}, our approach is able to produce a new model quicker when targeting a new captcha system. The
-properties of the images that are abstracted by the beginning layers of our neural networks are mostly independent of the specific captcha
-system. This means that one can reuse these parts of the network across captcha systems, and, in the process, learning is speeded up
-considerably.
+%After that, we need to uniform the font style of characters for further processing. This is because on some captcha schemes, the characters have different font style (see Figure~\ref{fig:fill_color} (a), it includes both hollow and solid characters). We have shown that our approach can automatically translate the hollow character to the solid one (Figure~\ref{fig:fill_color}).
+
+%\FIXME{Bla… here we emphasizes that we develop an
+%approach based on \GANs that learns how to synthesize captchas and then uses the synthesized examples to build an accurate model.}
+
+
+%By employing \emph{transfer learning}, our approach is able to produce a new model quicker when targeting a new captcha system. The
+%properties of the images that are abstracted by the hidden layers of our neural networks are mostly independent of the specific captcha
+%system. This means that one can reuse these parts of the network across captcha systems, and, in the process, learning is speeded up
+%considerably.
 
 
 
