@@ -1,21 +1,30 @@
 \section{Experimental Results}
-In this section, we first present the overall success rate for breaking the captchas collected from the target websites. Our results shows that the overall success rates range from \textcolor{red}{45\%} to \textcolor{red}{90\%} speeding no more than 80 millseconds.
-We then analyze how the success rate is affected by the number of the training captchas.
-Finally, we demonstrate the risks of our attacking approach by simulating a real world attacking process before evaluating the robustness of the secure features using variant types of text-based captchas.
+In this section, we first present the overall success rate for breaking the captchas collected from the target websites. Our results show that the overall success rate ranges from 3\% to 92\% speeding no more than 150 milliseconds.
+We then analyze how the number of training captchas effects the success rate.
+Finally, we demonstrate the risk of our attacking approach by simulating a real world attacking process before evaluating the robustness of the secure features using various types of text-based captchas.
 
 \begin{table}[t]
     \centering
+    \small
     \caption{The overall success rate and average attack speeds for each Captcha scheme.}
-    \label{table: overall_rate}
-    \begin{tabular}{lcc}
+    \label{table: current_rate}
+    \begin{tabular}{lccc}
         \toprule
-        Scheme & Success rate  & Speed (ms)\\
+        & \multicolumn{2}{c}{Success rate} & \\
+        \cline{2-3}
+        \multirow{-2}{*}{Scheme} & Base Model & Fine Tune Model  & \multirow{-2}{*}{Speed (ms)}\\
         \midrule
-        Baidu & 45\% & 70 \\
-        Alipay & 86\% & 72 \\
-        NetEase & 67\% & 74 \\
-        VIPSHOP & 90\% & 65 \\
-        TOUP & 69\% & 50 \\
+        Google & 0\% & 3\% & 60 \\
+        Microsoft & 36.5\% & 69.5\% & 60 \\
+        Wikipedia & 6\% & 35.5\% & 60 \\
+        Ebay & 50\% & 86.5\% & 50 \\
+        Alipay & 26.5\% & 45\% & 60 \\
+        Baidu & 7.5\% & 19.5\% & 150 \\
+        JD & 60\% & 86\% & 140 \\
+        Sina & 44.5\% & 48.5\% & 20 \\
+        Weibo & 4.69\% & 27\% & 50 \\
+        Qihu360 & 48.5\% & 56\% & 50 \\
+        Sohu & 83\% & 92\% & 130 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -89,16 +98,14 @@ Finally, we demonstrate the risks of our attacking approach by simulating a real
 \end{figure}
 
 \subsection{Overall Success Rate}
-In this experiment, the training data were synthesized used our captcha generator, and the number of each training captcha scheme is 20000. The corresponding testing data were collected from the target websites and its number is 2000.
+In this experiment, the training captchas were synthesized by our captcha synthesizer. For each captcha scheme, the number of training data is 200k. The corresponding testing data were collected from the target websites and its number is 2000.
 \subsubsection{Evaluation using current text-based captchas}
-Table~\ref{table: overall_rate} shows the success rate for breaking different text-based captcha schemes and it ranges from 45\% to 90\%. For VIOSHOP scheme, we are able to successfully cracking 90\% captchas as our attacking approach can effectively remove the complex background as well as expand the space of adjacent characters. For Baidu captchas, the success rate decreases to 45\%. This is because Baidu uses almost two different styles of captcha scheme shown in Table~\ref{tab: captcha_show}. Further, it exploits both hollow and solid fonts. These designs make such scheme more complex than other captchas and more difficult to be recognized.
-On average, the breaking speeds for each captcha image is no more than 80 milliseconds.
-In general, our cracking success rate is far more than 1\%, the secure threshold at which the captcha is considered ineffective~\cite{Bursztein2011Text}, which means our approach pose a great threat to current widely used text-based captchas.
+Table~\ref{table: current_rate} shows the cracking success rate before or after model transferring and the cracking speed. Using the base model, our approach can crack all captchas except the Google captcha. Furthermore, the cracking success rate improves significantly using fine tune model that is built using only 500 real captchas. We failed to crack google captcha using the base model because google employed many fonts and multiple deformation characteristics to generate the captcha so that our synthesizer failed to learn the generation parameters of the real examples. But even so, our approach is still able to crack 3\% google captchas after model transferring based on the base model. For Microsoft, Wikipedia, Ebay, Alipay, Baidu and Weibo captchas, the success rates before model transferring respectively are 36.5\%, 6\%, 50\%, 26.5\%, 7.5\% and 4.69\%. After model transferring, the success rates significantly increase and they are 69.5\%, 35.5\%, 86.5\%, 45\%, 19.5\% and 27\%, respectively. This illustrates that our model transferring approach is effective for cracking captchas. For other captcha schemes such as JD, Sina, Qihu360 and Sohu, they are easier to be cracked by our approach. This is proved that the success rates are more than 45\% using fine tune model. In general, our cracking success rate is far more than 1\%, the secure threshold at which the captcha is considered ineffective~\cite{Bursztein2011Text}. On average, our approach takes less than 150 milliseconds per cracking a captcha. Specifically, it takes no more than 60 milliseconds to crack a captcha without background. This means our approach poses a great threat to current widely used text-based captchas.
 
 \begin{table*}[t]
     \centering
-    \caption{The overall success rate and average attack speeds for each Captcha scheme.}
-    \label{table: overall_rate}
+    \caption{The success rate for cracking previous captchas. "reCaptcha(11)" denotes the reCaptcha at 2011.}
+    \label{table: previous_rate}
     \scriptsize
     \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
         \hline
@@ -106,37 +113,40 @@ In general, our cracking success rate is far more than 1\%, the secure threshold
         \cline{2-3} \cline{5-6} \cline{8-9} \cline{11-12}
         \multirow{-2}{*}{Scheme} & ref.~\cite{Bursztein2011Text} & ours & \multirow{-2}{*}{Scheme} & ref.~\cite{Gao2016A} & ours & \multirow{-2}{*}{Scheme} & ref.~\cite{Bursztein2014The} & ours & \multirow{-2}{*}{Scheme} & ref.~\cite{George2017A} & ours \\
         \hline
-        Authorize & 66\% & & reCaptcha & 77.2\% & 96.62\% & Baidu(2011) & 38.68\% & & reCaptcha & 66.6\% & \\
+        Wikipedia & 25\% & 35.5\% & Wikipedia & 23.8\% & 35.5\% & Wikipedia & 28.29\% & 35.5\% & reCaptcha(11) & 66.6\% & 87.5\% \\
         \hline
-        Blizzaer & 70\% & & Yahoo! & 5.2\% & & Baidu(2013) & 55.22\% & & Yahoo! & 57.4\% & \\
+        eBay & 43\% & 86.5\% & eBay & 58.8\% & 86.5\% & eBay & 51.39\% & 86.5\% & Yahoo!(16) & 57.4\% & 63\% \\
         \hline
-        Captcha.net & 73\% & & Baidu & 46.6\% & 95.62\% & CNN & 51.09\% & & PayPal & 57.1\% & \\
+        Captcha.net & 73\% & 99.5\% & reCaptcha(11) & 77.2\% & 87.5\% & CNN & 51.09\% &  & PayPal & 57.1\% & \\
         \hline
-        Digg & 20\% & & Wikipedia & 23.8\% & 76.38\% & eBay & 51.39\% & 99.46\% & MNIST & 97.89\% & 97.45\% \\
+        Digg & 20\% & 95\% & Yahoo!(16) & 5.2\% & 63\% & reCaptcha(11) & 22.67\% & 87.5\% & MNIST & 97.89\% & 97.45\% \\
         \hline
-        eBay & 43\% & 98.9\% & QQ & 56\% & & ReCaptcha(2011) & 22.67\% & & & &\\
+        Blizzaer & 70\% & 100\% & Baidu(16) & 46.6\% & 97.5\% & reCaptcha(13) & 22.34\% & 90\% & & &\\
         \hline
-        Megaupload & 93\% & & Microsoft & 16.2\% & & ReCaptcha(2013) & 22.34\% & & & & \\
+        Megaupload & 93\% & 100\% & Microsoft & 16.2\% & 72.5\% & Yahoo!(14) & 5.33\% &  & & & \\
         \hline
-        NIH & 72\% & & Amazon & 25.8\% & 78.38\% & Wikipedia & 28.29\% & 76.38\% & & & \\
+        NIH & 72\% & 99\% & Amazon & 25.8\% & 79\% & Baidu(11) & 38.68\% & 83.5\% & & & \\
         \hline
-        Reddit & 42\% & & Taobao & 23.4\% & 96.44\% & Yahoo! & 5.33\% & & & &  \\
+        Reddit & 42\% & 98\% & Taobao & 23.4\% & 91.5\% & Baidu(13) & 55.22\% & 89\% & & &  \\
         \hline
-        Slashdot & 35\% & & Sina & 9.4\% & & & & & & & \\
+        Slashdot & 35\% & 86.5\% & Sina & 9.4\% & 90.5\% & & & & & & \\
         \hline
-        Wikipedia & 25\% & 76.38\% & eBay & 58.8\% & 99.46\% & & & & & & \\
+        Authorize & 66\% & 100\% & QQ & 56\% & 94.5\% & & & & & & \\
         \hline
     \end{tabular}
 \end{table*}
 
 \subsubsection{Evaluating using Previous text-based captchas}
-In this section, we compare our result with previous works~\cite{Bursztein2011Text,Gao2016A,Bursztein2014The} using the previous text-based captchas.
-For the previous captchas, the real world testing data are hard to be collected because most websites have updated their Captcha scheme which is more complex than prior one. To acquire the true previous captchas, we first use some online captcha generator such as Captcha.net to produce the true Captcha images. We then employ the generators that previous papers has provided to generate captchas. If neither of the two cases, we use our captcha generator to produce the testing data.
+In this section, we compare our approach with previous works~\cite{Bursztein2011Text,Gao2016A,Bursztein2014The,George2017A} using previous text-based captchas. Since many websites have update their captcha schemes except Wikipedia and Ebay, we collected the previous captchas using the following three principles: (1) we use the online captcha generator such as Captcha.net to produce the true captchas; (2) we employ the open programs that previous papers have provided to generate the true captchas and (3) we collect previous captchas from the public datasets. For each captcha scheme, we totally collected 700 real samples including 500 for model transferring and 200 for testing. We use our captcha synthesizer (Section~\ref{section: captcha_generator}) to generate 200k captchas per captcha scheme for training the base model. Figure 12 depicts some examples of the previous real captchas and the generated versions that synthesized by our generator. Note that our synthesizer aims to generate the same style of captcha as the target captcha, other than the same captcha as the target one. So the generated captcha has some subtle differences from the real one. For example, Figure~\ref{fig: generate_show} (e) shows the real captcha deployed by Microsoft, and it slightly different from the generated one shown in (f) because the each character on captcha image is randomly rotated and distorted. Nevertheless, the generated captchas contain the main features of the original real world captchas.
 
-Figure~\ref{fig: generate_show} depicts some captcha examples of the previous real world captchas and our generated versions that produced by our generator (Section~\ref{section: Captcha_generator}). Recall that our captcha generator is able to generate the similar style captchas with the real world captcha scheme. So the generated captcha has some subtle differences from the real one. For example, Figure~\ref{fig: generate_show} (e) shows the real captcha deployed by Microsoft, and it slightly different from the generated one shown in (f) because the each character on captcha image is randomly rotated and distorted.
-Nevertheless, the generated captchas contain the main features of the original real world captchas.
+Table~\ref{table: previous_rate} summaries the success rate for recognizing previous captchas. It shows that our approach is able to solve every captcha scheme with accuracy higher than previous approaches proposed in~\cite{Bursztein2011Text,Gao2016A,Bursztein2014The,George2017A}. Our approach in its best configuration can crack all Blizzaer, Megaupload and Authorize captchas that are evaluated in~\cite{Bursztein2011Text}. Unlike previous segment then recognize method~\cite{Bursztein2011Text,Gao2016A,Bursztein2014The,George2017A}, we proposed an end to end approach that can crack the captcha quicker.
 
-\textcolor{red}{The experimental results show that}
+%In this section, we compare our result with previous works~\cite{Bursztein2011Text,Gao2016A,Bursztein2014The,George2017A} using the previous text-based captchas.
+%For the previous captchas, the real world testing data are hard to be collected because most websites have updated their Captcha scheme which is more complex than prior one. To acquire the true previous captchas, we first use some online captcha generator such as Captcha.net to produce the true Captcha images. We then employ the generators that previous papers has provided to generate captchas. If neither of the two cases, we use our captcha generator to produce the testing data.
+%
+%Figure~\ref{fig: generate_show} depicts some captcha examples of the previous real world captchas and our generated versions that produced by our generator (Section~\ref{section: Captcha_generator}). Recall that our captcha generator is able to generate the similar style captchas with the real world captcha scheme. So the generated captcha has some subtle differences from the real one. For example, Figure~\ref{fig: generate_show} (e) shows the real captcha deployed by Microsoft, and it slightly different from the generated one shown in (f) because the each character on captcha image is randomly rotated and distorted.
+%Nevertheless, the generated captchas contain the main features of the original real world captchas.
+
 
 \begin{figure}
   \centering
